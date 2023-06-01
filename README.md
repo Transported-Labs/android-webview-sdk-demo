@@ -27,3 +27,6 @@ Several environment variables and/or system properties contain different paths t
 Please correct and use only one way to inject the SDK location.
 ```
 In this case open file **local.properties** and set up the correct location of the Android SDK to _sdk.dir_ param.
+
+## Sample of HTML-file
+Please find the sample HTML-file in assets of the demo project: [index.html](https://github.com/Transported-Labs/android-webview-sdk-demo/blob/main/app/src/main/assets/index.html)
