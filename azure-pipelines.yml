@@ -140,7 +140,7 @@ stages:
           - bash: |
               ls -lFht ./**
               ls -lFht ./app/**
-              ls -lFht ./app/build/**
+              ls -lFht ./app/build/outputs/apk/**
             displayName: Show Files 
 
           # - script: |
