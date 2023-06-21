@@ -110,31 +110,36 @@ stages:
       - job: BuildAndPublishAndroidWebviewSdk
         steps:
           - script: |
-              # cd $(System.DefaultWorkingDirectory)
-              # ls -lFht
-              # pwd
               mkdir -p ../android-webview-sdk/lib/build/outputs/aar/
             displayName: mkdir outputs/aar
 
           - task: PythonScript@0
-            displayName: 'Download debug/latest.aar'
+            displayName: 'Download {debug,release}/latest.aar'
             inputs:
               scriptSource: inline
               script: |
                 import urllib.request
-                url = 'https://file.developdxp.com/webview-sdk/android/debug/latest.aar'
-                path = r"$(System.DefaultWorkingDirectory)/../android-webview-sdk/lib/build/outputs/aar/lib-debug.aar"
-                urllib.request.urlretrieve(url, path)
+                
+                url_debug = 'https://file.developdxp.com/webview-sdk/android/debug/latest.aar'
+                path_debug = r"$(System.DefaultWorkingDirectory)/../android-webview-sdk/lib/build/outputs/aar/lib-debug.aar"
+                urllib.request.urlretrieve(url_debug, path_debug)
+                
+                url_release = 'https://file.developdxp.com/webview-sdk/android/release/latest.aar'
+                path_release = r"$(System.DefaultWorkingDirectory)/../android-webview-sdk/lib/build/outputs/aar/lib-release.aar"
+                urllib.request.urlretrieve(url_release, path_release)
 
           - bash: |
               set -e
+              ls -lFht $(System.DefaultWorkingDirectory)/../android-webview-sdk/lib/build/outputs/aar/
               rm gradlew
               gradle wrapper
               ls -lFht
               ./gradlew assemble
             displayName: Build aar
 
-          - bash: ls -lFht ./**
+          - bash: |
+              ls -lFht ./**
+              ls -lFht ./app/**
             displayName: Show Files 
 
           # - script: |
