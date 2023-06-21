@@ -113,7 +113,7 @@ stages:
               # cd $(System.DefaultWorkingDirectory)
               # ls -lFht
               # pwd
-              # mkdir -p ../android-webview-sdk/lib/build/outputs/aar/
+              mkdir -p ../android-webview-sdk/lib/build/outputs/aar/
             displayName: mkdir outputs/aar
 
           - task: PythonScript@0
