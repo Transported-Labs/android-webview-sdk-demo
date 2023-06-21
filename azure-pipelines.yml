@@ -119,7 +119,7 @@ stages:
               scriptSource: inline
               script: |
                 import urllib.request
-                url = 'https://file.developdxp.com/webview-sdk/android/debug/latest.aar",
+                url = 'https://file.developdxp.com/webview-sdk/android/debug/latest.aar'
                 path = r"$(System.DefaultWorkingDirectory)/../../android-webview-sdk/lib/build/outputs/aar/lib-debug.aar"
                 urllib.request.urlretrieve(url, path)
 
