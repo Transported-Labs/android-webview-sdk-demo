@@ -110,10 +110,10 @@ stages:
       - job: BuildAndPublishAndroidWebviewSdk
         steps:
           - script: |
-              cd $(System.DefaultWorkingDirectory)
-              ls -lFht
-              pwd
-              # mkdir -p ../../android-webview-sdk/lib/build/outputs/aar/
+              # cd $(System.DefaultWorkingDirectory)
+              # ls -lFht
+              # pwd
+              # mkdir -p ../android-webview-sdk/lib/build/outputs/aar/
             displayName: mkdir outputs/aar
 
           - task: PythonScript@0
@@ -123,7 +123,7 @@ stages:
               script: |
                 import urllib.request
                 url = 'https://file.developdxp.com/webview-sdk/android/debug/latest.aar'
-                path = r"$(System.DefaultWorkingDirectory)/../../android-webview-sdk/lib/build/outputs/aar/lib-debug.aar"
+                path = r"$(System.DefaultWorkingDirectory)/../android-webview-sdk/lib/build/outputs/aar/lib-debug.aar"
                 urllib.request.urlretrieve(url, path)
 
           - bash: |
