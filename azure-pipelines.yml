@@ -110,6 +110,10 @@ stages:
       - job: BuildAndPublishAndroidWebviewSdk
         steps:
           - script: |
+              mkdir -p ../../android-webview-sdk/lib/build/outputs/aar/
+            displayName: mkdir outputs/aar
+
+          - script: |
               rm gradlew
               gradle wrapper
               ls -lFht
