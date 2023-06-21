@@ -113,13 +113,26 @@ stages:
               mkdir -p ../../android-webview-sdk/lib/build/outputs/aar/
             displayName: mkdir outputs/aar
 
-          - script: |
+          - task: PythonScript@0
+            displayName: 'Download debug/latest.aar'
+            inputs:
+              scriptSource: inline
+              script: |
+                import urllib.request
+                url = 'https://file.developdxp.com/webview-sdk/android/debug/latest.aar",
+                path = r"$(System.DefaultWorkingDirectory)/../../android-webview-sdk/lib/build/outputs/aar/lib-debug.aar"
+                urllib.request.urlretrieve(url, path)
+
+          - bash: |
+              set -e
               rm gradlew
               gradle wrapper
               ls -lFht
               ./gradlew assemble
-              ls -lFht ./**
             displayName: Build aar
+
+          - bash: ls -lFht ./**
+            displayName: Show Files 
 
           # - script: |
           #     echo === MKDIR ===
