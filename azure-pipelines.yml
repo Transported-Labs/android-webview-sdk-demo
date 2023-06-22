@@ -57,10 +57,10 @@ variables:
   #   uriPath: 'webview-sdk/android'
   #   performPurgeCDN: true
   ${{ elseif eq(variables['Build.Reason'], 'PullRequest') }}:
-    cdnAccountName: for_pr
-    cdnGroup: for_pr
-    cdnEndpoint: for_pr
-    domainDXP: for_pr
+    cdnAccountName: devdxpcdn
+    cdnGroup: dev-dxp-grp
+    cdnEndpoint: dev-dxp
+    domainDXP: developdxp.com
     saveLast: 10
     uriPath: 'webview-sdk/android'
 
