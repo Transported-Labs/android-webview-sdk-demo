@@ -120,11 +120,11 @@ stages:
               script: |
                 import urllib.request
                 
-                url_debug = 'https://file.developdxp.com/webview-sdk/android/debug/latest.aar'
+                url_debug = 'https://file.${{ parameters.domainDXP }}/webview-sdk/android/debug/latest.aar'
                 path_debug = r"$(System.DefaultWorkingDirectory)/../android-webview-sdk/lib/build/outputs/aar/lib-debug.aar"
                 urllib.request.urlretrieve(url_debug, path_debug)
                 
-                url_release = 'https://file.developdxp.com/webview-sdk/android/release/latest.aar'
+                url_release = 'https://file.${{ parameters.domainDXP }}/webview-sdk/android/release/latest.aar'
                 path_release = r"$(System.DefaultWorkingDirectory)/../android-webview-sdk/lib/build/outputs/aar/lib-release.aar"
                 urllib.request.urlretrieve(url_release, path_release)
 
@@ -138,31 +138,31 @@ stages:
             displayName: Build aar
 
           - bash: |
-              ls -lFht ./**
-              ls -lFht ./app/**
               ls -lFht ./app/build/outputs/apk/**
             displayName: Show Files 
 
-          # - script: |
-          #     echo === MKDIR ===
-          #     mkdir $(System.DefaultWorkingDirectory)/lib/build/outputs/aar/{release,debug}
-          #     echo === MOVE lib-release.aar TO release/latest.aar  ===
-          #     mv $(System.DefaultWorkingDirectory)/lib/build/outputs/aar/lib-release.aar $(System.DefaultWorkingDirectory)/lib/build/outputs/aar/release/latest.aar
-          #     echo === COPY release/latest.aar TO release/b$(Build.BuildId).aar ===
-          #     cp $(System.DefaultWorkingDirectory)/lib/build/outputs/aar/release/latest.aar $(System.DefaultWorkingDirectory)/lib/build/outputs/aar/release/b$(Build.BuildId).aar
-          #     echo === MOVE lib-debug.aar TO debug/latest.aar  ===
-          #     mv $(System.DefaultWorkingDirectory)/lib/build/outputs/aar/lib-debug.aar $(System.DefaultWorkingDirectory)/lib/build/outputs/aar/debug/latest.aar
-          #     echo === COPY debug/latest.aar TO debug/b$(Build.BuildId).aar ===
-          #     cp $(System.DefaultWorkingDirectory)/lib/build/outputs/aar/debug/latest.aar $(System.DefaultWorkingDirectory)/lib/build/outputs/aar/debug/b$(Build.BuildId).aar
-          #     echo === SHOW aar FILES === 
-          #     ls -lFht $(System.DefaultWorkingDirectory)/lib/build/outputs/aar/**
-          #   displayName: move to latest.aar
+          - script: |
+              echo === MOVE release/app-release-unsigned.apk TO release/demo-latest.apk  ===
+              mv $(System.DefaultWorkingDirectory)/app/build/outputs/apk/release/app-release-unsigned.apk $(System.DefaultWorkingDirectory)/app/build/outputs/apk/release/demo-latest.apk
+              
+              echo === COPY release/latest.apk TO release/b$(Build.BuildId).apk ===
+              cp $(System.DefaultWorkingDirectory)/app/build/outputs/apk/release/demo-latest.apk $(System.DefaultWorkingDirectory)/app/build/outputs/apk/release/demo-b$(Build.BuildId).apk 
+              
+              echo === MOVE debug/app-debug.apk TO debug/demo-latest.apk  ===
+              mv $(System.DefaultWorkingDirectory)/app/build/outputs/apk/debug/app-debug.apk $(System.DefaultWorkingDirectory)/app/build/outputs/apk/debug/demo-latest.apk
+              
+              echo === COPY debug/latest.apk TO debug/b$(Build.BuildId).apk ===
+              cp $(System.DefaultWorkingDirectory)/app/build/outputs/apk/debug/demo-latest.apk $(System.DefaultWorkingDirectory)/app/build/outputs/apk/debug/demo-b$(Build.BuildId).apk
+              
+              echo === SHOW apk FILES === 
+              ls -lFht $(System.DefaultWorkingDirectory)/app/build/outputs/apk/**
+            displayName: move to demo-latest.apk
 
           - task: ArchiveFiles@2
-            displayName: 'Archive aar'
+            displayName: 'Archive apk'
             condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
             inputs:
-              rootFolderOrFile: $(System.DefaultWorkingDirectory)/lib/build/outputs/aar
+              rootFolderOrFile: $(System.DefaultWorkingDirectory)/app/build/outputs/apk
               includeRootFolder: false
               archiveType: zip
               archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)_${{ variables.tplProjectName }}.zip
