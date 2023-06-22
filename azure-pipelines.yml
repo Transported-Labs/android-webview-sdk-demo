@@ -142,6 +142,7 @@ stages:
             displayName: Show Files 
 
           - script: |
+              rm $(System.DefaultWorkingDirectory)/app/build/outputs/apk/{release,debug}/output-metadata.json
               echo === MOVE release/app-release-unsigned.apk TO release/demo-latest.apk  ===
               mv $(System.DefaultWorkingDirectory)/app/build/outputs/apk/release/app-release-unsigned.apk $(System.DefaultWorkingDirectory)/app/build/outputs/apk/release/demo-latest.apk
               
@@ -205,14 +206,14 @@ stages:
                     cleanDestinationFolder: true
                     overwriteExistingFiles: false
 
-                # - task: AzureCLI@2
-                #   displayName: Deploy ${{ variables.tplProjectName }} ${{parameters.cdnAccountName}}
-                #   inputs:
-                #     azureSubscription: $(AZURE_SUBSCRIPTION)
-                #     scriptType: 'bash'
-                #     scriptLocation: 'inlineScript'
-                #     inlineScript: 'az storage blob upload-batch -d "\$web/${{ parameters.uriPath }}" -s ./${{ variables.tplProjectName }} --account-name ${{parameters.cdnAccountName}} --overwrite=true'
-                #     useGlobalConfig: true
+                - task: AzureCLI@2
+                  displayName: Deploy ${{ variables.tplProjectName }} ${{parameters.cdnAccountName}}
+                  inputs:
+                    azureSubscription: $(AZURE_SUBSCRIPTION)
+                    scriptType: 'bash'
+                    scriptLocation: 'inlineScript'
+                    inlineScript: 'az storage blob upload-batch -d "\$web/${{ parameters.uriPath }}" -s ./${{ variables.tplProjectName }} --account-name ${{parameters.cdnAccountName}} --overwrite=true'
+                    useGlobalConfig: true
 
   - stage: PurgeCDN
     displayName: PurgeCDN stage
