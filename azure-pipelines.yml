@@ -10,7 +10,7 @@ trigger:
 
 variables:
   vmImageUbu: 'ubuntu-latest'
-  tplProjectName: 'android-webview-sdk'
+  tplProjectName: 'android-webview-sdk-demo'
   # ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
   #   webAppName: prod-dxp
   #   cdnAccountName: proddxpcdn
@@ -107,7 +107,7 @@ stages:
     pool:
       vmImage: $(vmImageUbu)
     jobs:
-      - job: BuildAndPublishAndroidWebviewSdk
+      - job: BuildAndPublishAndroidWebviewSdkDemo
         steps:
           - script: |
               mkdir -p ../android-webview-sdk/lib/build/outputs/aar/
