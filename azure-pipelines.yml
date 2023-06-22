@@ -135,7 +135,7 @@ stages:
               gradle wrapper
               ls -lFht
               ./gradlew assemble
-            displayName: Build aar
+            displayName: Build apk
 
           - bash: |
               ls -lFht ./app/build/outputs/apk/**
