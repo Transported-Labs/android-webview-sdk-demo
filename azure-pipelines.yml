@@ -6,7 +6,6 @@ trigger:
     # - develop
     # - testing
     # - staging
-    - pipeline_debug
 
 variables:
   vmImageUbu: 'ubuntu-latest'
@@ -29,7 +28,7 @@ variables:
     saveLast: 10
     uriPath: 'webview-sdk/android'
     performPurgeAFD: true
-  ${{ elseif eq(variables['Build.SourceBranchName'], 'pipeline_debug') }}:
+  ${{ elseif eq(variables['Build.SourceBranchName'], 'develop') }}:
     webAppName: dev-dxp
     cdnAccountName: devdxpcdn
     cdnGroup: dev-dxp-grp
@@ -113,21 +112,6 @@ stages:
               mkdir -p ../android-webview-sdk/lib/build/outputs/aar/
             displayName: mkdir outputs/aar
 
-          # - task: PythonScript@0
-          #   displayName: 'Download {debug,release}/latest.aar'
-          #   inputs:
-          #     scriptSource: inline
-          #     script: |
-          #       import urllib.request
-                
-          #       url_debug = 'https://file.${{ parameters.domainDXP }}/webview-sdk/android/debug/latest.aar'
-          #       path_debug = r"$(System.DefaultWorkingDirectory)/../android-webview-sdk/lib/build/outputs/aar/lib-debug.aar"
-          #       urllib.request.urlretrieve(url_debug, path_debug)
-                
-          #       url_release = 'https://file.${{ parameters.domainDXP }}/webview-sdk/android/release/latest.aar'
-          #       path_release = r"$(System.DefaultWorkingDirectory)/../android-webview-sdk/lib/build/outputs/aar/lib-release.aar"
-          #       urllib.request.urlretrieve(url_release, path_release)
-
           - task: AzureCLI@2
             displayName: 'Download {debug,release}/latest.aar'
             inputs:
@@ -135,10 +119,7 @@ stages:
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
               inlineScript: |
-                # mkdir $(Build.SourcesDirectory)\BlobFile
-                
-                az storage blob download --account-name ${{parameters.cdnAccountName}} --container-name '$web' --file $(System.DefaultWorkingDirectory)/../android-webview-sdk/lib/build/outputs/aar/lib-debug.aar --name "webview-sdk/android/debug/latest.aar" 
-                
+                az storage blob download --account-name ${{parameters.cdnAccountName}} --container-name '$web' --file $(System.DefaultWorkingDirectory)/../android-webview-sdk/lib/build/outputs/aar/lib-debug.aar --name "webview-sdk/android/debug/latest.aar"
                 az storage blob download --account-name ${{parameters.cdnAccountName}} --container-name '$web' --file $(System.DefaultWorkingDirectory)/../android-webview-sdk/lib/build/outputs/aar/lib-release.aar --name "webview-sdk/android/release/latest.aar" 
               useGlobalConfig: true
 
