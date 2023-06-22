@@ -232,150 +232,150 @@ stages:
               steps:
                 - bash: echo test
 
-                # - task: AzureCLI@2
-                #   displayName: Purge CDN ${{variables.cdnAccountName}}
-                #   condition: and(succeededOrFailed(), eq(variables['performPurgeCDN'], 'true'))
+                - task: AzureCLI@2
+                  displayName: Purge CDN ${{variables.cdnAccountName}}
+                  condition: and(succeededOrFailed(), eq(variables['performPurgeCDN'], 'true'))
+                  inputs:
+                    azureSubscription: $(AZURE_SUBSCRIPTION)
+                    scriptType: 'bash'
+                    scriptLocation: 'inlineScript'
+                    inlineScript: 'az cdn endpoint purge --debug -g ${{variables.cdnGroup}} -n ${{variables.cdnEndpoint}} --profile-name ${{variables.cdnEndpoint}} --content-paths "/*"'
+                    useGlobalConfig: true
+
+                - task: AzureCLI@2
+                  displayName: 'Purge AFD ${{ parameters.cdnAccountName }}'
+                  condition: and(succeededOrFailed(), or(eq(variables['performPurgeAFD'], 'true'), eq('${{ parameters.customPerformPurgeAFD }}', 'true')))
+                  inputs:
+                    azureSubscription: $(AZURE_SUBSCRIPTION)
+                    scriptType: 'bash'
+                    scriptLocation: 'inlineScript'
+                    inlineScript: |
+                      set -e
+                      az afd endpoint purge --debug --resource-group ${{parameters.cdnGroup}} --profile-name ${{parameters.cdnEndpoint}}-standard --endpoint-name ${{parameters.cdnEndpoint}}  --content-paths '/*' --domains file.${{ parameters.domainDXP }}
+                    useGlobalConfig: true
+
+                - task: AzureCLI@2
+                  displayName: Leave the last ${{variables.saveLast}} files for CDN ${{variables.cdnAccountName}} in webview-sdk/android/release/demo-b*
+                  inputs:
+                    azureSubscription: $(AZURE_SUBSCRIPTION)
+                    scriptType: 'bash'
+                    scriptLocation: 'inlineScript'
+                    inlineScript: |
+                      echo "------------------------------"
+                      echo ""The Last ${{variables.saveLast}} Files" - webview-sdk/android/release/demo-b"
+                      echo "------------------------------"
+                      az storage blob list --only-show-errors -c \$web --account-name ${{variables.cdnAccountName}} --prefix "webview-sdk/android/release/demo-b" --query \
+                      "sort_by([].{name:name, Date:properties.lastModified}, &Date)" -otsv
+                      echo "------------------------------"
+                      echo "Files will be deleted in the ${{variables.saveLast}}"
+                      echo "------------------------------"
+                      az storage blob list --only-show-errors -c \$web --account-name ${{variables.cdnAccountName}} --prefix "webview-sdk/android/release/demo-b" --query \
+                      "sort_by([].{name:name, Date:properties.lastModified}, &Date)" -otsv|awk '{print $1}'|head -n -${{variables.saveLast}}
+                      echo "------------------------------"
+                      echo "Deleting"
+                      echo "------------------------------"
+                      az storage blob list --only-show-errors -c \$web --account-name ${{variables.cdnAccountName}} --prefix "webview-sdk/android/release/demo-b" --query \
+                      "sort_by([].{name:name, Date:properties.lastModified}, &Date)" -otsv|awk '{print $1}'|head -n -${{variables.saveLast}} \
+                      | xargs -rtL1 -I {} \
+                      az storage blob delete-batch --only-show-errors --source \$web --account-name ${{variables.cdnAccountName}} --pattern {}
+                    useGlobalConfig: true
+
+                - task: AzureCLI@2
+                  displayName: Leave the last ${{variables.saveLast}} files for CDN ${{variables.cdnAccountName}} in webview-sdk/android/debug/demo-b*
+                  inputs:
+                    azureSubscription: $(AZURE_SUBSCRIPTION)
+                    scriptType: 'bash'
+                    scriptLocation: 'inlineScript'
+                    inlineScript: |
+                      echo "------------------------------"
+                      echo ""The Last ${{variables.saveLast}} Files" - webview-sdk/android/debug/demo-b"
+                      echo "------------------------------"
+                      az storage blob list --only-show-errors -c \$web --account-name ${{variables.cdnAccountName}} --prefix "webview-sdk/android/debug/demo-b" --query \
+                      "sort_by([].{name:name, Date:properties.lastModified}, &Date)" -otsv
+                      echo "------------------------------"
+                      echo "Files will be deleted in the ${{variables.saveLast}}"
+                      echo "------------------------------"
+                      az storage blob list --only-show-errors -c \$web --account-name ${{variables.cdnAccountName}} --prefix "webview-sdk/android/debug/demo-b" --query \
+                      "sort_by([].{name:name, Date:properties.lastModified}, &Date)" -otsv|awk '{print $1}'|head -n -${{variables.saveLast}}
+                      echo "------------------------------"
+                      echo "Deleting"
+                      echo "------------------------------"
+                      az storage blob list --only-show-errors -c \$web --account-name ${{variables.cdnAccountName}} --prefix "webview-sdk/android/debug/demo-b" --query \
+                      "sort_by([].{name:name, Date:properties.lastModified}, &Date)" -otsv|awk '{print $1}'|head -n -${{variables.saveLast}} \
+                      | xargs -rtL1 -I {} \
+                      az storage blob delete-batch --only-show-errors --source \$web --account-name ${{variables.cdnAccountName}} --pattern {}
+                    useGlobalConfig: true
+
+                # - bash: |
+                #     echo $(errorExist)
+                #   displayName: Show Value errorExist
+
+                # - task: PythonScript@0
+                #   displayName: Send about files differ from the build
+                #   condition: and(succeededOrFailed(), eq(variables['errorExist'], 'Yes'))
                 #   inputs:
-                #     azureSubscription: $(AZURE_SUBSCRIPTION)
-                #     scriptType: 'bash'
-                #     scriptLocation: 'inlineScript'
-                #     inlineScript: 'az cdn endpoint purge --debug -g ${{variables.cdnGroup}} -n ${{variables.cdnEndpoint}} --profile-name ${{variables.cdnEndpoint}} --content-paths "/*"'
-                #     useGlobalConfig: true
+                #     scriptSource: 'inline'
+                #     script: |
+                #       import os
+                #       import json
+                #       import requests
 
-                # - task: AzureCLI@2
-                #   displayName: 'Purge AFD ${{ parameters.cdnAccountName }}'
-                #   condition: and(succeededOrFailed(), or(eq(variables['performPurgeAFD'], 'true'), eq('${{ parameters.customPerformPurgeAFD }}', 'true')))
-                #   inputs:
-                #     azureSubscription: $(AZURE_SUBSCRIPTION)
-                #     scriptType: 'bash'
-                #     scriptLocation: 'inlineScript'
-                #     inlineScript: |
-                #       set -e
-                #       az afd endpoint purge --debug --resource-group ${{parameters.cdnGroup}} --profile-name ${{parameters.cdnEndpoint}}-standard --endpoint-name ${{parameters.cdnEndpoint}}  --content-paths '/*' --domains file.${{ parameters.domainDXP }}
-                #     useGlobalConfig: true
-
-                # - task: AzureCLI@2
-                #   displayName: Leave the last ${{variables.saveLast}} files for CDN ${{variables.cdnAccountName}} in webview-sdk/android/release/b*
-                #   inputs:
-                #     azureSubscription: $(AZURE_SUBSCRIPTION)
-                #     scriptType: 'bash'
-                #     scriptLocation: 'inlineScript'
-                #     inlineScript: |
-                #       echo "------------------------------"
-                #       echo ""The Last ${{variables.saveLast}} Files" - webview-sdk/android/release/b"
-                #       echo "------------------------------"
-                #       az storage blob list --only-show-errors -c \$web --account-name ${{variables.cdnAccountName}} --prefix "webview-sdk/android/release/b" --query \
-                #       "sort_by([].{name:name, Date:properties.lastModified}, &Date)" -otsv
-                #       echo "------------------------------"
-                #       echo "Files will be deleted in the ${{variables.saveLast}}"
-                #       echo "------------------------------"
-                #       az storage blob list --only-show-errors -c \$web --account-name ${{variables.cdnAccountName}} --prefix "webview-sdk/android/release/b" --query \
-                #       "sort_by([].{name:name, Date:properties.lastModified}, &Date)" -otsv|awk '{print $1}'|head -n -${{variables.saveLast}}
-                #       echo "------------------------------"
-                #       echo "Deleting"
-                #       echo "------------------------------"
-                #       az storage blob list --only-show-errors -c \$web --account-name ${{variables.cdnAccountName}} --prefix "webview-sdk/android/release/b" --query \
-                #       "sort_by([].{name:name, Date:properties.lastModified}, &Date)" -otsv|awk '{print $1}'|head -n -${{variables.saveLast}} \
-                #       | xargs -rtL1 -I {} \
-                #       az storage blob delete-batch --only-show-errors --source \$web --account-name ${{variables.cdnAccountName}} --pattern {}
-                #     useGlobalConfig: true
-
-                # - task: AzureCLI@2
-                #   displayName: Leave the last ${{variables.saveLast}} files for CDN ${{variables.cdnAccountName}} in webview-sdk/android/debug/b*
-                #   inputs:
-                #     azureSubscription: $(AZURE_SUBSCRIPTION)
-                #     scriptType: 'bash'
-                #     scriptLocation: 'inlineScript'
-                #     inlineScript: |
-                #       echo "------------------------------"
-                #       echo ""The Last ${{variables.saveLast}} Files" - webview-sdk/android/debug/b"
-                #       echo "------------------------------"
-                #       az storage blob list --only-show-errors -c \$web --account-name ${{variables.cdnAccountName}} --prefix "webview-sdk/android/debug/b" --query \
-                #       "sort_by([].{name:name, Date:properties.lastModified}, &Date)" -otsv
-                #       echo "------------------------------"
-                #       echo "Files will be deleted in the ${{variables.saveLast}}"
-                #       echo "------------------------------"
-                #       az storage blob list --only-show-errors -c \$web --account-name ${{variables.cdnAccountName}} --prefix "webview-sdk/android/debug/b" --query \
-                #       "sort_by([].{name:name, Date:properties.lastModified}, &Date)" -otsv|awk '{print $1}'|head -n -${{variables.saveLast}}
-                #       echo "------------------------------"
-                #       echo "Deleting"
-                #       echo "------------------------------"
-                #       az storage blob list --only-show-errors -c \$web --account-name ${{variables.cdnAccountName}} --prefix "webview-sdk/android/debug/b" --query \
-                #       "sort_by([].{name:name, Date:properties.lastModified}, &Date)" -otsv|awk '{print $1}'|head -n -${{variables.saveLast}} \
-                #       | xargs -rtL1 -I {} \
-                #       az storage blob delete-batch --only-show-errors --source \$web --account-name ${{variables.cdnAccountName}} --pattern {}
-                #     useGlobalConfig: true
-
-                # # - bash: |
-                # #     echo $(errorExist)
-                # #   displayName: Show Value errorExist
-
-                # # - task: PythonScript@0
-                # #   displayName: Send about files differ from the build
-                # #   condition: and(succeededOrFailed(), eq(variables['errorExist'], 'Yes'))
-                # #   inputs:
-                # #     scriptSource: 'inline'
-                # #     script: |
-                # #       import os
-                # #       import json
-                # #       import requests
-
-                # #       SEND_MAIL_TO = os.environ['SEND_MAIL_TO']
-                # #       SYSTEM_STAGEID=os.environ['SYSTEM_STAGEID']
-                # #       BUILD_BUILDID=os.environ['BUILD_BUILDID']
-                # #       devOpsOrg = "$(devOpsOrg)"
-                # #       devOpsProj = "$(devOpsProj)"
-                # #       url = f'$(devOpsUrl)'
-                # #       params = {'api-version': '6.0-preview.1'}
-                # #       headers = {'Content-Type': 'application/json'}
-                # #       response = requests.get(
-                # #           url,
-                # #           headers=headers,
-                # #           params=params,
-                # #           auth=('', '$(armDevOpsPipeline)')
-                # #       )
-                # #       textTeams = json.loads(response.text)
-                # #       devOpsTeamsId = list(map(lambda id: id['id'], textTeams['value']))
-                # #       listMembers = []
-                # #       for idMember in devOpsTeamsId:
-                # #           urlMembers = f'$(devOpsUrl)/{idMember}/members'
-                # #           params = {'api-version': '6.0-preview.1'}
-                # #           headers = {'Content-Type': 'application/json'}
-                # #           responseMembers = requests.get(
-                # #               urlMembers,
-                # #               headers=headers,
-                # #               params=params,
-                # #               auth=('', '$(armDevOpsPipeline)')
-                # #           )
-                # #           textMembers = json.loads(responseMembers.text)
-                # #           listMembers.append(textMembers['value'])
-                # #       recipientsIds = []
-                # #       for members in listMembers:
-                # #           for memberId in members:
-                # #               if memberId['uniqueName'] in SEND_MAIL_TO.split(','):
-                # #                   recipientsIds.append(memberId['id'])
-                # #       for recipientId in set(recipientsIds):
-                # #           data_body = \
-                # #               {
-                # #                   "senderType": 1,
-                # #                   "to": {
-                # #                       "tfsIds": [
-                # #                           f"{recipientId}"
-                # #                       ],
-                # #                       "emailAddresses": []
-                # #                   },
-                # #                   "subject": "There are problems in the Pipeline, see the link in the email",
-                # #                   "body": f"$(seeBuildTask)"
-                # #               }
-                # #           url = f'$(devOpsUrlSendMail)'
-                # #           params = {'api-version': '7.1-preview.1'}
-                # #           headers = {'Content-Type': 'application/json'}
-                # #           data = data_body
-                # #           response = requests.post(
-                # #               url,
-                # #               data=json.dumps(data),
-                # #               headers=headers,
-                # #               params=params,
-                # #               auth=('', '$(armDevOpsPipeline)')
-                # #           )
-                # #           print(response.text if response.text != '' else f'sended recipients {SEND_MAIL_TO}')
+                #       SEND_MAIL_TO = os.environ['SEND_MAIL_TO']
+                #       SYSTEM_STAGEID=os.environ['SYSTEM_STAGEID']
+                #       BUILD_BUILDID=os.environ['BUILD_BUILDID']
+                #       devOpsOrg = "$(devOpsOrg)"
+                #       devOpsProj = "$(devOpsProj)"
+                #       url = f'$(devOpsUrl)'
+                #       params = {'api-version': '6.0-preview.1'}
+                #       headers = {'Content-Type': 'application/json'}
+                #       response = requests.get(
+                #           url,
+                #           headers=headers,
+                #           params=params,
+                #           auth=('', '$(armDevOpsPipeline)')
+                #       )
+                #       textTeams = json.loads(response.text)
+                #       devOpsTeamsId = list(map(lambda id: id['id'], textTeams['value']))
+                #       listMembers = []
+                #       for idMember in devOpsTeamsId:
+                #           urlMembers = f'$(devOpsUrl)/{idMember}/members'
+                #           params = {'api-version': '6.0-preview.1'}
+                #           headers = {'Content-Type': 'application/json'}
+                #           responseMembers = requests.get(
+                #               urlMembers,
+                #               headers=headers,
+                #               params=params,
+                #               auth=('', '$(armDevOpsPipeline)')
+                #           )
+                #           textMembers = json.loads(responseMembers.text)
+                #           listMembers.append(textMembers['value'])
+                #       recipientsIds = []
+                #       for members in listMembers:
+                #           for memberId in members:
+                #               if memberId['uniqueName'] in SEND_MAIL_TO.split(','):
+                #                   recipientsIds.append(memberId['id'])
+                #       for recipientId in set(recipientsIds):
+                #           data_body = \
+                #               {
+                #                   "senderType": 1,
+                #                   "to": {
+                #                       "tfsIds": [
+                #                           f"{recipientId}"
+                #                       ],
+                #                       "emailAddresses": []
+                #                   },
+                #                   "subject": "There are problems in the Pipeline, see the link in the email",
+                #                   "body": f"$(seeBuildTask)"
+                #               }
+                #           url = f'$(devOpsUrlSendMail)'
+                #           params = {'api-version': '7.1-preview.1'}
+                #           headers = {'Content-Type': 'application/json'}
+                #           data = data_body
+                #           response = requests.post(
+                #               url,
+                #               data=json.dumps(data),
+                #               headers=headers,
+                #               params=params,
+                #               auth=('', '$(armDevOpsPipeline)')
+                #           )
+                #           print(response.text if response.text != '' else f'sended recipients {SEND_MAIL_TO}')
