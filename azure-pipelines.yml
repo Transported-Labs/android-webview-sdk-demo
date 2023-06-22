@@ -136,8 +136,10 @@ stages:
               scriptLocation: 'inlineScript'
               inlineScript: |
                 # mkdir $(Build.SourcesDirectory)\BlobFile
-                az storage blob download --container-name '$web' --file $(System.DefaultWorkingDirectory)/../android-webview-sdk/lib/build/outputs/aar --name "webview-sdk/android/debug/latest.aar" --account-name ${{parameters.cdnAccountName}}
-                az storage blob download --container-name '$web' --file $(System.DefaultWorkingDirectory)/../android-webview-sdk/lib/build/outputs/aar --name "webview-sdk/android/release/latest.aar" --account-name ${{parameters.cdnAccountName}}
+                
+                az storage blob download --account-name ${{parameters.cdnAccountName}} --container-name '$web' --file $(System.DefaultWorkingDirectory)/../android-webview-sdk/lib/build/outputs/aar/lib-debug.aar --name "webview-sdk/android/debug/latest.aar" 
+                
+                az storage blob download --account-name ${{parameters.cdnAccountName}} --container-name '$web' --file $(System.DefaultWorkingDirectory)/../android-webview-sdk/lib/build/outputs/aar/lib-release.aar --name "webview-sdk/android/release/latest.aar" 
               useGlobalConfig: true
 
 
