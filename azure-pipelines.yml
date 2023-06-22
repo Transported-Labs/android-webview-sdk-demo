@@ -113,20 +113,33 @@ stages:
               mkdir -p ../android-webview-sdk/lib/build/outputs/aar/
             displayName: mkdir outputs/aar
 
-          - task: PythonScript@0
+          # - task: PythonScript@0
+          #   displayName: 'Download {debug,release}/latest.aar'
+          #   inputs:
+          #     scriptSource: inline
+          #     script: |
+          #       import urllib.request
+                
+          #       url_debug = 'https://file.${{ parameters.domainDXP }}/webview-sdk/android/debug/latest.aar'
+          #       path_debug = r"$(System.DefaultWorkingDirectory)/../android-webview-sdk/lib/build/outputs/aar/lib-debug.aar"
+          #       urllib.request.urlretrieve(url_debug, path_debug)
+                
+          #       url_release = 'https://file.${{ parameters.domainDXP }}/webview-sdk/android/release/latest.aar'
+          #       path_release = r"$(System.DefaultWorkingDirectory)/../android-webview-sdk/lib/build/outputs/aar/lib-release.aar"
+          #       urllib.request.urlretrieve(url_release, path_release)
+
+          - task: AzureCLI@2
             displayName: 'Download {debug,release}/latest.aar'
             inputs:
-              scriptSource: inline
-              script: |
-                import urllib.request
-                
-                url_debug = 'https://file.${{ parameters.domainDXP }}/webview-sdk/android/debug/latest.aar'
-                path_debug = r"$(System.DefaultWorkingDirectory)/../android-webview-sdk/lib/build/outputs/aar/lib-debug.aar"
-                urllib.request.urlretrieve(url_debug, path_debug)
-                
-                url_release = 'https://file.${{ parameters.domainDXP }}/webview-sdk/android/release/latest.aar'
-                path_release = r"$(System.DefaultWorkingDirectory)/../android-webview-sdk/lib/build/outputs/aar/lib-release.aar"
-                urllib.request.urlretrieve(url_release, path_release)
+              azureSubscription: $(AZURE_SUBSCRIPTION)
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                # mkdir $(Build.SourcesDirectory)\BlobFile
+                az storage blob download --container-name '$web' --file $(System.DefaultWorkingDirectory)/../android-webview-sdk/lib/build/outputs/aar --name "webview-sdk/android/debug/latest.aar" --account-name ${{parameters.cdnAccountName}}
+                az storage blob download --container-name '$web' --file $(System.DefaultWorkingDirectory)/../android-webview-sdk/lib/build/outputs/aar --name "webview-sdk/android/release/latest.aar" --account-name ${{parameters.cdnAccountName}}
+              useGlobalConfig: true
+
 
           - bash: |
               set -e
@@ -230,7 +243,6 @@ stages:
           runOnce:
             deploy:
               steps:
-                - bash: echo test
 
                 - task: AzureCLI@2
                   displayName: Purge CDN ${{variables.cdnAccountName}}
