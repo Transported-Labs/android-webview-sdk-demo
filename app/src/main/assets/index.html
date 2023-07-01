@@ -22,15 +22,18 @@
             <input type="checkbox" name="torchCheckbox">
             <span class="slider round"></span>
         </label>
-        <h3/>
+        <h3></h3>
         <button class="button" name="torchStateButton">Check state</button>
-        <h3/>
+        <h3></h3>
+        <button class="button" name="vibrateButton">Vibrate</button>
+        <h3></h3>
         <button class="button" name="testErrorButton">Test error</button>
-        <h3/>
+        <h3></h3>
         <div id="methodResult"></div>
         <script>
             const requestId = 323412;
-            const serviceName = "torch";
+            const torchServiceName = "torch";
+            const vibrationServiceName = "vibration";
             
             //JSON is passed from app like that:
             //cueSDKCallback(JSON.stringify({
@@ -41,29 +44,42 @@
                 document.getElementById('methodResult').innerText = "Returned JSON: " + data.toString();
             }
             
-            function callMethod(method) {
+            function callTorchMethod(method) {
                 // Call in iOS WKWebView
                 if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.cueSDK) {
-                    window.webkit.messageHandlers.cueSDK.postMessage(JSON.stringify([requestId, serviceName, method]));
+                    window.webkit.messageHandlers.cueSDK.postMessage(JSON.stringify([requestId, torchServiceName, method]));
                 }
                 // Call in Android WebView
                 if (cueSDK) {
-                    cueSDK.postMessage(JSON.stringify([requestId, serviceName, method]));
+                    cueSDK.postMessage(JSON.stringify([requestId, torchServiceName, method]));
                 }
             }
-            
+            function callVibrationMethod(method, duration) {
+                if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.cueSDK) {
+                    window.webkit.messageHandlers.cueSDK.postMessage(JSON.stringify([requestId, vibrationServiceName, method, duration]));
+                }
+                // Call in Android WebView
+                if (cueSDK) {
+                    cueSDK.postMessage(JSON.stringify([requestId, vibrationServiceName, method, duration]));
+                }
+            }
+
             var _selector = document.querySelector('input[name=torchCheckbox]');
             _selector.addEventListener('change', function(event) {
                 var method = (_selector.checked) ? "on" : "off";
-                callMethod(method);
+                callTorchMethod(method);
             });
             var _button = document.querySelector('button[name=torchStateButton]');
             _button.addEventListener('click', function(event) {
-                callMethod("isOn");
+                callTorchMethod("isOn");
+            });
+            var _vibrateButton = document.querySelector('button[name=vibrateButton]');
+            _vibrateButton.addEventListener('click', function(event) {
+                callVibrationMethod("vibrate", 500);
             });
             var _testErrorButton = document.querySelector('button[name=testErrorButton]');
             _testErrorButton.addEventListener('click', function(event) {
-                callMethod("testError");
+                callTorchMethod("testError");
             });
         </script>
     </body>
