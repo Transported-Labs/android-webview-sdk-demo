@@ -32,6 +32,10 @@
         <button class="button" name="testErrorButton">Test error</button>
         <h3></h3>
         <div id="methodResult"></div>
+        <h3></h3>
+        <button class="button" name="micButton">Microphone</button>
+        <h3></h3>
+        <audio id="player" controls></audio>
         <script>
             const requestId = 323412;
             const torchServiceName = "torch";
@@ -65,6 +69,19 @@
                     cueSDK.postMessage(JSON.stringify([requestId, service, method, duration]));
                 }
             }
+            
+            function initMicrophone() {
+                player = document.getElementById('player');
+                navigator.mediaDevices
+                    .getUserMedia({audio: true, video: false})
+                    .then((stream) => {
+                        player.srcObject = stream;
+                        player.autoplay = true;
+                    })
+                .catch((err) => {
+                    alert(`You got an error: ${err}`);
+                });
+            }
 
             var _selector = document.querySelector('input[name=torchCheckbox]');
             _selector.addEventListener('change', function(event) {
@@ -82,6 +99,10 @@
             var _sparkleButton = document.querySelector('button[name=sparkleButton]');
             _sparkleButton.addEventListener('click', function(event) {
                 callMethodWithDuration(torchServiceName, "sparkle", 5000);
+            });
+            var _micButton = document.querySelector('button[name=micButton]');
+            _micButton.addEventListener('click', function(event) {
+                initMicrophone();
             });
             var _testErrorButton = document.querySelector('button[name=testErrorButton]');
             _testErrorButton.addEventListener('click', function(event) {
