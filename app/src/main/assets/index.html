@@ -3,7 +3,7 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <style>
-            .button { position: relative; width: 150px; height: 34px; font-size: 16px;}
+            .button { position: relative; min-width: 160px; height: 34px; font-size: 16px;}
             .switch { position: relative; display: inline-block; width: 60px; height: 34px; }
             .switch input { opacity: 0; width: 0; height: 0; }
             label.switch { outline: none; }
@@ -29,18 +29,27 @@
         <h3></h3>
         <button class="button" name="sparkleButton">Sparkle</button>
         <h3></h3>
+        <button class="button" name="askMicButton">Ask Mic permission</button>
+        <h3></h3>
+        <button class="button" name="askCamButton">Ask Cam permission</button>
+        <h3></h3>
         <button class="button" name="testErrorButton">Test error</button>
         <h3></h3>
         <div id="methodResult"></div>
         <h3></h3>
-        <button class="button" name="micButton">Microphone</button>
+        <button class="button" name="testMicButton">Test Microphone</button>
         <h3></h3>
-        <audio id="player" controls></audio>
+        <audio id="audio" controls></audio>
+        <h3></h3>
+        <button class="button" name="testCamButton">Test Camera</button>
+        <h3></h3>
+        <video id="video" controls></video>
         <script>
             const requestId = 323412;
             const torchServiceName = "torch";
             const vibrationServiceName = "vibration";
-            
+            const permissionsServiceName = "permissions";
+
             //JSON is passed from app like that:
             //cueSDKCallback(JSON.stringify({
             //}))
@@ -50,14 +59,14 @@
                 document.getElementById('methodResult').innerText = "Returned JSON: " + data.toString();
             }
             
-            function callTorchMethod(method) {
+            function callMethod(service, method) {
                 // Call in iOS WKWebView
                 if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.cueSDK) {
-                    window.webkit.messageHandlers.cueSDK.postMessage(JSON.stringify([requestId, torchServiceName, method]));
+                    window.webkit.messageHandlers.cueSDK.postMessage(JSON.stringify([requestId, service, method]));
                 }
                 // Call in Android WebView
                 if (cueSDK) {
-                    cueSDK.postMessage(JSON.stringify([requestId, torchServiceName, method]));
+                    cueSDK.postMessage(JSON.stringify([requestId, service, method]));
                 }
             }
             function callMethodWithDuration(service, method, duration) {
@@ -70,10 +79,22 @@
                 }
             }
             
-            function initMicrophone() {
-                player = document.getElementById('player');
+            function testMicrophone() {
+                player = document.getElementById('audio');
                 navigator.mediaDevices
                     .getUserMedia({audio: true, video: false})
+                    .then((stream) => {
+                        player.srcObject = stream;
+                        player.autoplay = true;
+                    })
+                .catch((err) => {
+                    alert(`You got an error: ${err}`);
+                });
+            }
+            function testCamera() {
+                player = document.getElementById('video');
+                navigator.mediaDevices
+                    .getUserMedia({audio: false, video: true})
                     .then((stream) => {
                         player.srcObject = stream;
                         player.autoplay = true;
@@ -86,11 +107,11 @@
             var _selector = document.querySelector('input[name=torchCheckbox]');
             _selector.addEventListener('change', function(event) {
                 var method = (_selector.checked) ? "on" : "off";
-                callTorchMethod(method);
+                callMethod(torchServiceName, method);
             });
             var _torchStateButton = document.querySelector('button[name=torchStateButton]');
             _torchStateButton.addEventListener('click', function(event) {
-                callTorchMethod("isOn");
+                callMethod(torchServiceName, "isOn");
             });
             var _vibrateButton = document.querySelector('button[name=vibrateButton]');
             _vibrateButton.addEventListener('click', function(event) {
@@ -100,13 +121,25 @@
             _sparkleButton.addEventListener('click', function(event) {
                 callMethodWithDuration(torchServiceName, "sparkle", 5000);
             });
-            var _micButton = document.querySelector('button[name=micButton]');
-            _micButton.addEventListener('click', function(event) {
-                initMicrophone();
+            var _askMicButton = document.querySelector('button[name=askMicButton]');
+            _askMicButton.addEventListener('click', function(event) {
+                callMethod(permissionsServiceName, "getMicPermission");
+            });
+            var _askCamButton = document.querySelector('button[name=askCamButton]');
+            _askCamButton.addEventListener('click', function(event) {
+                callMethod(permissionsServiceName, "getCameraPermission");
             });
             var _testErrorButton = document.querySelector('button[name=testErrorButton]');
             _testErrorButton.addEventListener('click', function(event) {
-                callTorchMethod("testError");
+                callMethod(torchServiceName, "testError");
+            });
+            var _testMicButton = document.querySelector('button[name=testMicButton]');
+            _testMicButton.addEventListener('click', function(event) {
+                testMicrophone();
+            });
+            var _testCamButton = document.querySelector('button[name=testCamButton]');
+            _testCamButton.addEventListener('click', function(event) {
+                testCamera();
             });
         </script>
     </body>
