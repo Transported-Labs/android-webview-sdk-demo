@@ -29,6 +29,8 @@
         <h3></h3>
         <button class="button" name="sparkleButton">Sparkle</button>
         <h3></h3>
+        <button class="button" name="askPhotoSaveButton">Ask Photo Save permission</button>
+        <h3></h3>
         <button class="button" name="askMicButton">Ask Mic permission</button>
         <h3></h3>
         <button class="button" name="askCamButton">Ask Cam permission</button>
@@ -69,13 +71,13 @@
                     cueSDK.postMessage(JSON.stringify([requestId, service, method]));
                 }
             }
-            function callMethodWithDuration(service, method, duration) {
+            function callMethodWithParam(service, method, param) {
                 if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.cueSDK) {
-                    window.webkit.messageHandlers.cueSDK.postMessage(JSON.stringify([requestId, service, method, duration]));
+                    window.webkit.messageHandlers.cueSDK.postMessage(JSON.stringify([requestId, service, method, param]));
                 }
                 // Call in Android WebView
                 if (cueSDK) {
-                    cueSDK.postMessage(JSON.stringify([requestId, service, method, duration]));
+                    cueSDK.postMessage(JSON.stringify([requestId, service, method, param]));
                 }
             }
             
@@ -115,11 +117,15 @@
             });
             var _vibrateButton = document.querySelector('button[name=vibrateButton]');
             _vibrateButton.addEventListener('click', function(event) {
-                callMethodWithDuration(vibrationServiceName, "vibrate", 500);
+                callMethodWithParam(vibrationServiceName, "vibrate", 500);
             });
             var _sparkleButton = document.querySelector('button[name=sparkleButton]');
             _sparkleButton.addEventListener('click', function(event) {
-                callMethodWithDuration(torchServiceName, "sparkle", 5000);
+                callMethodWithParam(torchServiceName, "sparkle", 5000);
+            });
+            var _askPhotoSaveButton = document.querySelector('button[name=askPhotoSaveButton]');
+            _askPhotoSaveButton.addEventListener('click', function(event) {
+                callMethod(permissionsServiceName, "getSavePhotoPermission");
             });
             var _askMicButton = document.querySelector('button[name=askMicButton]');
             _askMicButton.addEventListener('click', function(event) {
@@ -141,6 +147,7 @@
             _testCamButton.addEventListener('click', function(event) {
                 testCamera();
             });
+            
         </script>
     </body>
 </html>
