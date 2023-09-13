@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
             try {
                 webViewController.navigateTo(url)
             } catch (e: InvalidUrlError) {
+                // Show invalid URL error message
                 Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
             }
         }
