@@ -20,21 +20,34 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:id="@+id/openInBrowserButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:minWidth="190dp"
+        android:text="@string/open_in_browser"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/urlEditText" />
+
+    <Button
         android:id="@+id/navigateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:text="Navigate to URL"
+        android:minWidth="190dp"
+        android:text="@string/navigate_to_url"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/urlEditText" />
+        app:layout_constraintTop_toBottomOf="@id/openInBrowserButton" />
 
     <Button
         android:id="@+id/openFileButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:text="Open sample page"
+        android:minWidth="190dp"
+        android:text="@string/open_sample_page"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/navigateButton" />
