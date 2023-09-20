@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             try {
-                webViewController.openInBrowser(url)
+                webViewController.openInChrome(url)
             } catch (e: InvalidUrlError) {
                 // Show invalid URL error message
                 Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
