@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/openInBrowserButton"
+        android:id="@+id/openInChromeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
@@ -31,6 +31,17 @@
         app:layout_constraintTop_toBottomOf="@id/urlEditText" />
 
     <Button
+        android:id="@+id/navigateGeckoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:minWidth="@dimen/button_min_width"
+        android:text="@string/navigate_to_url_gecko"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/openInChromeButton" />
+
+    <Button
         android:id="@+id/navigateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,7 +50,19 @@
         android:text="@string/navigate_to_url"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/openInBrowserButton" />
+        app:layout_constraintTop_toBottomOf="@id/navigateGeckoButton" />
+
+    <Button
+        android:id="@+id/openFileGeckoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_marginTop="50dp"
+        android:minWidth="@dimen/button_min_width"
+        android:text="@string/open_sample_page_gecko"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/navigateButton" />
 
     <Button
         android:id="@+id/openFileButton"
@@ -50,6 +73,6 @@
         android:text="@string/open_sample_page"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/navigateButton" />
+        app:layout_constraintTop_toBottomOf="@id/openFileGeckoButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
