@@ -33,7 +33,6 @@ android {
 }
 
 dependencies {
-    implementation "org.mozilla.geckoview:geckoview:112.0.20230406114409"
     implementation("androidx.browser:browser:1.5.0")
     implementation files('../../android-webview-sdk/lib/build/outputs/aar/lib-debug.aar')
     implementation 'androidx.core:core-ktx:1.7.0'
