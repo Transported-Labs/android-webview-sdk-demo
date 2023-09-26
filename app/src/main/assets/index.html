@@ -37,9 +37,15 @@
         <h3></h3>
         <button class="button" name="askCamButton">Ask Cam permission</button>
         <h3></h3>
+        <button class="button" name="startListeningButton">Start Listening</button>
+        <h3></h3>
+        <button class="button" name="stopListeningButton">Stop Listening</button>
+        <h3></h3>
         <button class="button" name="testErrorButton">Test error</button>
         <h3></h3>
         <div id="methodResult"></div>
+        <h3></h3>
+        <div id="triggerResult"></div>
         <h3></h3>
         <button class="button" name="testMicButton">Test Microphone</button>
         <h3></h3>
@@ -54,6 +60,7 @@
             const vibrationServiceName = "vibration";
             const permissionsServiceName = "permissions";
             const storageServiceName = "storage";
+            const audioTriggersServiceName = "audioTriggers";
 
             //JSON is passed from app like that:
             //cueSDKCallback(JSON.stringify({
@@ -63,7 +70,11 @@
                 //var transferData = JSON.parse(data);
                 document.getElementById('methodResult').innerText = "Returned JSON: " + data.toString();
             }
-            
+
+            function cueAudioTriggerCallback(trigger) {
+                document.getElementById('triggerResult').innerText = "Trigger: " + trigger;
+            }
+
             function callMethod(...args) {
                 var argString = JSON.stringify([requestId, ...args]);
                 if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.cueSDK) {
@@ -133,6 +144,16 @@
             var _askCamButton = document.querySelector('button[name=askCamButton]');
             _askCamButton.addEventListener('click', function(event) {
                 callMethod(permissionsServiceName, "getCameraPermission");
+            });
+            var _startListeningButton = document.querySelector('button[name=startListeningButton]');
+            _startListeningButton.addEventListener('click', function(event) {
+                callMethod(audioTriggersServiceName, "startListening");
+                document.getElementById('triggerResult').innerText = "Triggers are started"
+            });
+            var _stopListeningButton = document.querySelector('button[name=stopListeningButton]');
+            _stopListeningButton.addEventListener('click', function(event) {
+                callMethod(audioTriggersServiceName, "stopListening");
+                document.getElementById('triggerResult').innerText = "Triggers are stopped"
             });
             var _testErrorButton = document.querySelector('button[name=testErrorButton]');
             _testErrorButton.addEventListener('click', function(event) {
