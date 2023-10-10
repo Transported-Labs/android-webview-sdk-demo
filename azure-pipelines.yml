@@ -108,6 +108,18 @@ stages:
     jobs:
       - job: BuildAndPublishAndroidWebviewSdkDemo
         steps:
+
+          - script: |
+              echo '' >> local.properties
+              echo com.cueaudio.maven.bucket=$COM_CUEAUDIO_MAVEN_BUCKET >> local.properties
+              echo com.cueaudio.maven.username=$COM_CUEAUDIO_MAVEN_USERNAME >> local.properties
+              echo com.cueaudio.maven.password=$COM_CUEAUDIO_MAVEN_PASSWORD >> local.properties
+            displayName: set com.cueaudio.maven.* for aar
+            env:
+              COM_CUEAUDIO_MAVEN_BUCKET: $(COM_CUEAUDIO_MAVEN_BUCKET)
+              COM_CUEAUDIO_MAVEN_USERNAME: $(COM_CUEAUDIO_MAVEN_USERNAME)
+              COM_CUEAUDIO_MAVEN_PASSWORD: $(COM_CUEAUDIO_MAVEN_PASSWORD)
+
           - script: |
               mkdir -p ../android-webview-sdk/lib/build/outputs/aar/
             displayName: mkdir outputs/aar
