@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.Toast
 import com.cueaudio.webviewsdk.InvalidUrlError
 import com.cueaudio.webviewsdk.WebViewController
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,10 +47,6 @@ class MainActivity : AppCompatActivity() {
         val openFileButton = findViewById<Button>(R.id.openFileButton)
         openFileButton.setOnClickListener {
             webViewController.navigateTo("file:///android_asset/index.html")
-        }
-        val demoEngineButton = findViewById<Button>(R.id.demoEngineButton)
-        demoEngineButton.setOnClickListener {
-            webViewController.demoEngine()
         }
     }
 }
