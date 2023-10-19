@@ -23,11 +23,15 @@
             <span class="slider round"></span>
         </label>
         <h3></h3>
+        <button class="button" name="torchLevelButton">Turn on dimmed</button>
+        <h3></h3>
         <button class="button" name="torchStateButton">Check state</button>
         <h3></h3>
         <button class="button" name="vibrateButton">Vibrate</button>
         <h3></h3>
-        <button class="button" name="sparkleButton">Sparkle</button>
+        <button class="button" name="sparkleButton">Simple sparkle</button>
+        <h3></h3>
+        <button class="button" name="advancedSparkleButton">Advanced sparkle</button>
         <h3></h3>
         <button class="button" name="saveImageButton">Save image</button>
         <h3></h3>
@@ -105,6 +109,10 @@
                 var method = (_selector.checked) ? "on" : "off";
                 callMethod(torchServiceName, method);
             });
+            var _torchLevelButton = document.querySelector('button[name=torchLevelButton]');
+            _torchLevelButton.addEventListener('click', function(event) {
+                callMethod(torchServiceName, "on", 0.05);
+            });
             var _torchStateButton = document.querySelector('button[name=torchStateButton]');
             _torchStateButton.addEventListener('click', function(event) {
                 callMethod(torchServiceName, "isOn");
@@ -116,6 +124,11 @@
             var _sparkleButton = document.querySelector('button[name=sparkleButton]');
             _sparkleButton.addEventListener('click', function(event) {
                 callMethod(torchServiceName, "sparkle", 5000);
+                //callMethod(torchServiceName, "advancedSparkle", 2000, 1000, 2000, 0.09);
+            });
+            var _advancedSparkleButton = document.querySelector('button[name=advancedSparkleButton]');
+            _advancedSparkleButton.addEventListener('click', function(event) {
+                callMethod(torchServiceName, "advancedSparkle", 2000, 1000, 2000, 1.0);
             });
             var _saveImageButton = document.querySelector('button[name=saveImageButton]');
             _saveImageButton.addEventListener('click', function(event) {
