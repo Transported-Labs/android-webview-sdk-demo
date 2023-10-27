@@ -67,13 +67,14 @@
         <h3></h3>
         <button class="button" name="testCamButton">Test Camera</button>
         <h3></h3>
-        <video id="video" controls></video>
+<!--        <video id="video" controls></video>-->
         <script>
             const requestId = 323412;
             const torchServiceName = "torch";
             const vibrationServiceName = "vibration";
             const permissionsServiceName = "permissions";
             const storageServiceName = "storage";
+            const cameraServiceName = "camera";
 
             //JSON is passed from app like that:
             //cueSDKCallback(JSON.stringify({
@@ -108,6 +109,14 @@
                 });
             }
             function testCamera() {
+                setTimeout(function() {
+                    callMethod(torchServiceName, "sparkle", 2000);
+                }, 3000);
+                callMethod(cameraServiceName, "openCamera");
+            }
+            
+            // Old implementation, not used now
+            function testCameraOld() {
                 player = document.getElementById('video');
                 navigator.mediaDevices
                     .getUserMedia({audio: false, video: true})
@@ -141,7 +150,6 @@
             var _sparkleButton = document.querySelector('button[name=sparkleButton]');
             _sparkleButton.addEventListener('click', function(event) {
                 callMethod(torchServiceName, "sparkle", 5000);
-                //callMethod(torchServiceName, "advancedSparkle", 2000, 1000, 2000, 0.09);
             });
             var _advancedSparkleButton = document.querySelector('button[name=advancedSparkleButton]');
             _advancedSparkleButton.addEventListener('click', function(event) {
