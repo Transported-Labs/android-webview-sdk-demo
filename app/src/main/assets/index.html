@@ -109,9 +109,9 @@
                 });
             }
             function testCamera() {
-                setTimeout(function() {
-                    callMethod(torchServiceName, "sparkle", 2000);
-                }, 3000);
+                setInterval(() => {
+                     callMethod(torchServiceName, "sparkle", 1000);
+                }, 2000);
                 callMethod(cameraServiceName, "openCamera");
             }
             
