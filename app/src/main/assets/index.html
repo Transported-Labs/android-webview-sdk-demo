@@ -3,6 +3,7 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <style>
+            body {background: lightgrey;}
             .button { position: relative; min-width: 160px; height: 54px; font-size: 16px;}
             .switch { position: relative; display: inline-block; width: 60px; height: 34px; }
             .switch input { opacity: 0; width: 0; height: 0; }
@@ -65,7 +66,11 @@
         <h3></h3>
         <audio id="audio" controls></audio>
         <h3></h3>
-        <button class="button" name="testCamButton">Test Camera</button>
+        <button class="button" name="testCamButton">Photo & Video Camera</button>
+        <h3></h3>
+        <button class="button" name="testPhotoCamButton">Test Photo Camera</button>
+        <h3></h3>
+        <button class="button" name="testVideoCamButton">Test Video Camera</button>
         <h3></h3>
 <!--        <video id="video" controls></video>-->
         <script>
@@ -109,10 +114,16 @@
                 });
             }
             function testCamera() {
-                setInterval(() => {
-                     callMethod(torchServiceName, "sparkle", 1000);
-                }, 2000);
+                setTimeout(function() {
+                    callMethod(torchServiceName, "sparkle", 2000);
+                }, 3000);
                 callMethod(cameraServiceName, "openCamera");
+            }
+            function testPhotoCamera() {
+                callMethod(cameraServiceName, "openPhotoCamera");
+            }
+            function testVideoCamera() {
+                callMethod(cameraServiceName, "openVideoCamera");
             }
             
             // Old implementation, not used now
@@ -153,7 +164,6 @@
             });
             var _advancedSparkleButton = document.querySelector('button[name=advancedSparkleButton]');
             _advancedSparkleButton.addEventListener('click', function(event) {
-                // advancedSparkle should check strengthLevel > 0
                 callMethod(torchServiceName, "advancedSparkle", 2000, 1000, 2000, 1.0);
             });
             var _saveImageButton = document.querySelector('button[name=saveImageButton]');
@@ -197,7 +207,14 @@
             _testCamButton.addEventListener('click', function(event) {
                 testCamera();
             });
-            
+            var _testPhotoCamButton = document.querySelector('button[name=testPhotoCamButton]');
+            _testPhotoCamButton.addEventListener('click', function(event) {
+                testPhotoCamera();
+            });
+            var _testVideoCamButton = document.querySelector('button[name=testVideoCamButton]');
+            _testVideoCamButton.addEventListener('click', function(event) {
+                testVideoCamera();
+            });
         </script>
     </body>
 </html>
