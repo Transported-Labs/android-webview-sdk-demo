@@ -240,18 +240,7 @@ stages:
               steps:
 
                 - task: AzureCLI@2
-                  displayName: Purge CDN ${{variables.cdnAccountName}}
-                  condition: and(succeededOrFailed(), eq(variables['performPurgeCDN'], 'true'))
-                  inputs:
-                    azureSubscription: $(AZURE_SUBSCRIPTION)
-                    scriptType: 'bash'
-                    scriptLocation: 'inlineScript'
-                    inlineScript: 'az cdn endpoint purge --debug -g ${{variables.cdnGroup}} -n ${{variables.cdnEndpoint}} --profile-name ${{variables.cdnEndpoint}} --content-paths "/*"'
-                    useGlobalConfig: true
-
-                - task: AzureCLI@2
                   displayName: 'Purge AFD ${{ parameters.cdnAccountName }}'
-                  condition: and(succeededOrFailed(), or(eq(variables['performPurgeAFD'], 'true'), eq('${{ parameters.customPerformPurgeAFD }}', 'true')))
                   inputs:
                     azureSubscription: $(AZURE_SUBSCRIPTION)
                     scriptType: 'bash'
