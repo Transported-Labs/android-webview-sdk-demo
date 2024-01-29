@@ -7,7 +7,6 @@ import android.widget.EditText
 import android.widget.Toast
 import com.cueaudio.webviewsdk.InvalidUrlError
 import com.cueaudio.webviewsdk.WebViewController
-import java.io.File
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
