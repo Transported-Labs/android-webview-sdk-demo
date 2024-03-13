@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">WebViewSDKDemo</string>
+    <string name="prefetch">Prefetch</string>
     <string name="navigate_to_url">Open in WebView</string>
     <string name="open_sample_page">Sample in WebView</string>
     <string name="open_in_browser">Open in Chrome</string>
+    <string name="scan_qr">Scan QR</string>
 </resources>

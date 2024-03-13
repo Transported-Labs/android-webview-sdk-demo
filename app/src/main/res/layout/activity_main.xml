@@ -5,7 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-
+    <Button
+        android:id="@+id/scanQRButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:minWidth="@dimen/qr_min_width"
+        android:text="@string/scan_qr"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/urlEditText" />
     <EditText
         android:id="@+id/urlEditText"
         android:layout_width="0dp"
@@ -31,6 +40,17 @@
         app:layout_constraintTop_toBottomOf="@id/urlEditText" />
 
     <Button
+        android:id="@+id/prefetchButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:minWidth="@dimen/button_min_width"
+        android:text="@string/prefetch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/openInChromeButton" />
+
+    <Button
         android:id="@+id/navigateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,7 +59,7 @@
         android:text="@string/navigate_to_url"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/openInChromeButton" />
+        app:layout_constraintTop_toBottomOf="@id/prefetchButton" />
 
     <Button
         android:id="@+id/openFileButton"
