@@ -16,7 +16,7 @@ dependencyResolutionManagement {
 2.Add the dependency to **build.gradle (Module:app)**. Set up actual android-webview-sdk [version](https://github.com/Transported-Labs/android-webview-sdk/tags) 
 ```kotlin
 dependencies {
-    implementation 'com.github.Transported-Labs:android-webview-sdk:0.0.4'
+    implementation 'com.github.Transported-Labs:android-webview-sdk:0.0.5'
 }
 ```
 
