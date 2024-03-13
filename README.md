@@ -20,59 +20,38 @@ dependencies {
 }
 ```
 
-## Adding sample index.html
-Download sample index.html  [index.html](https://github.com/Transported-Labs/android-webview-sdk-demo/blob/main/app/src/main/assets/index.html). 
-Put it to project's assets folder.
+## Integration
 
-## Calling SDK methods from your code
-First add import-directive to your code file
+Simply execute the following code:
+
 ```kotlin
-import com.cueaudio.webviewsdk.InvalidUrlError
-import com.cueaudio.webviewsdk.WebViewController
+        navigateButton.setOnClickListener {
+            val url = "<your URL from CUE>"
+            try {
+                webViewController.navigateTo(url)
+            } catch (e: InvalidUrlError) {
+                // Show invalid URL error message
+                Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+            }
+        }
 ```
+## Pre-fetch
 
-Then add the Button object with the following OnClickListener to open sample index.html file:
+To pre-fetch lightshow resources is very similar to navigation, but we should keep sdkController hidden and add to URL preload parameter.
+Just execute the following code:
+
 ```kotlin
-val openFileButton = findViewById<Button>(R.id.openFileButton)
-openFileButton.setOnClickListener {
-    webViewController.navigateTo("file:///android_asset/index.html")
-}
+        prefetchButton.setOnClickListener {
+            val urlString = "<your URL from CUE>"
+            val url = "${urlString}&preload=true"
+            try {
+                webViewController.prefetch(url) {
+                    // You can get progress from 0 to 100 during the pre-fetch process
+                    prefetchButton.text = "Fetched:$it%"
+                }
+            } catch (e: InvalidUrlError) {
+                // Show invalid URL error message
+                Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+            }
+        }
 ```
-
-Then add one more Button object and EditText for URL-address of the lightshow webpage. The following code for button OnClickListener will navigate to the given webpage:
-```kotlin
-val urlEditText = findViewById<EditText>(R.id.urlEditText)
-val navigateButton = findViewById<Button>(R.id.navigateButton)
-navigateButton.setOnClickListener {
-    val url = urlEditText.text.toString()
-    if (url == "") {
-        println("Empty URL is not allowed")
-        return@setOnClickListener
-    }
-    try {
-        webViewController.navigateTo(url)
-    } catch (e: InvalidUrlError) {
-        println("Error occured: ${e.message}")
-    }
-}
-```
-
-## Usage of the local version of android-webview-sdk for debug purposes
-1. Clone both _android-webview-sdk_ and _android-webview-sdk-demo_ in the same directory:
-```
-    android-webview-sdk
-    android-webview-sdk-demo
-```
-2. Open Terminal in location of _android-webview-sdk_ and run the following command to build library:
-```
-./gradlew assemble
-```
-3. Open demo-project from _android-webview-sdk-demo_ in Android Studio 2022.1.1+:
-4. Check **build.gradle (Module :app)** file. It's dependencies section should contain the following:
-```kotlin
-//    implementation 'com.github.Transported-Labs:android-webview-sdk:0.0.4'
-// Comment out the line above and uncomment the line below to use local android-webview-sdk
-    implementation files('../../android-webview-sdk/lib/build/outputs/aar/lib-debug.aar')
-
-```
-5. Build and run demo-project _android-webview-sdk-demo_ in Android Studio.
