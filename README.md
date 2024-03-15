@@ -1,8 +1,8 @@
-# WebViewSDK demo project for Android
+# CueLightShow demo project for Android
 
-This project is used with [framework library](https://github.com/Transported-Labs/android-webview-sdk) to demonstrate CUELive Lightshow 2 SDK using page loaded to Android WebView.
+This project is used with [framework library](https://github.com/Transported-Labs/android-webview-sdk) to demonstrate CUELive Lightshow 2 SDK.
 
-## Usage of android-webview-sdk
+## Usage of CueLightShow library
 1.Add the JitPack repository to your **settings.gradle** file
 ```kotlin
 dependencyResolutionManagement {
@@ -16,7 +16,7 @@ dependencyResolutionManagement {
 2.Add the dependency to **build.gradle (Module:app)**. Set up actual android-webview-sdk [version](https://github.com/Transported-Labs/android-webview-sdk/tags) 
 ```kotlin
 dependencies {
-    implementation 'com.github.Transported-Labs:android-webview-sdk:0.0.5'
+    implementation 'com.github.Transported-Labs:android-webview-sdk:0.0.6'
 }
 ```
 
