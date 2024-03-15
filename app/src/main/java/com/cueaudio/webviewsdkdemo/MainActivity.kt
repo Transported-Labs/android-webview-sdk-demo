@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import com.cueaudio.webviewsdk.InvalidUrlError
-import com.cueaudio.webviewsdk.WebViewController
+import com.cueaudio.cuelightshow.InvalidUrlError
+import com.cueaudio.cuelightshow.WebViewController
 import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.integration.android.IntentResult
 
