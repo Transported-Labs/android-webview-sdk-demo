@@ -4,35 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/material_dynamic_neutral90"
     tools:context=".MainActivity">
+
     <Button
         android:id="@+id/scanQRButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         android:minWidth="@dimen/qr_min_width"
         android:text="@string/scan_qr"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/urlEditText" />
+        app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
         android:id="@+id/urlEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:minHeight="@dimen/edit_min_height"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="200dp"
-        android:hint="Type URL to navigate"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/white"
+        android:hint="@string/type_url_to_navigate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/scanQRButton" />
 
     <Button
         android:id="@+id/openInChromeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         android:minWidth="@dimen/button_min_width"
         android:text="@string/open_in_browser"
         app:layout_constraintEnd_toEndOf="parent"
@@ -43,7 +46,7 @@
         android:id="@+id/prefetchButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         android:minWidth="@dimen/button_min_width"
         android:text="@string/prefetch"
         app:layout_constraintEnd_toEndOf="parent"
@@ -54,7 +57,7 @@
         android:id="@+id/navigateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         android:minWidth="@dimen/button_min_width"
         android:text="@string/navigate_to_url"
         app:layout_constraintEnd_toEndOf="parent"
@@ -65,11 +68,81 @@
         android:id="@+id/openFileButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         android:minWidth="@dimen/button_min_width"
         android:text="@string/open_sample_page"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/navigateButton" />
+
+    <RelativeLayout
+        android:id="@+id/log_topbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toStartOf="@id/logText"
+        app:layout_constraintStart_toEndOf="@id/logText"
+        app:layout_constraintTop_toBottomOf="@id/openFileButton">
+
+        <TextView
+            android:id="@+id/logLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/clearLogButton"
+            android:text="@string/progress_log"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/clearLogButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="@string/clear_log" />
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/logText"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@android:color/white"
+        android:clickable="false"
+        android:ems="10"
+        android:focusable="false"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:scrollbars="vertical"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/log_bottombar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/log_topbar"
+        tools:text="@string/log_goes_here" />
+
+    <RelativeLayout
+        android:id="@+id/log_bottombar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/logText"
+        app:layout_constraintStart_toEndOf="@+id/logText">
+
+        <Button
+            android:id="@+id/showCacheButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/show_cache" />
+
+        <Button
+            android:id="@+id/clearCacheButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="@string/clear_cache" />
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

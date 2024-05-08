@@ -5,4 +5,10 @@
     <string name="open_sample_page">Sample in WebView</string>
     <string name="open_in_browser">Open in Chrome</string>
     <string name="scan_qr">Scan QR</string>
+    <string name="type_url_to_navigate">Type URL to navigate</string>
+    <string name="progress_log">Log</string>
+    <string name="clear_log">Clear Log</string>
+    <string name="log_goes_here">Log goes here</string>
+    <string name="show_cache">Show Cache</string>
+    <string name="clear_cache">Clear Cache</string>
 </resources>

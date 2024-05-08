@@ -37,17 +37,17 @@ Simply execute the following code:
 ```
 ## Pre-fetch
 
-To pre-fetch lightshow resources is very similar to navigation, but we should keep sdkController hidden and add to URL preload parameter.
+To pre-fetch lightshow resources is very similar to navigation.
 Just execute the following code:
 
 ```kotlin
         prefetchButton.setOnClickListener {
-            val urlString = "<your URL from CUE>"
-            val url = "${urlString}&preload=true"
+            val url = "<your URL from CUE>"
             try {
-                webViewController.prefetch(url) {
-                    // You can get progress from 0 to 100 during the pre-fetch process
-                    prefetchButton.text = "Fetched:$it%"
+                webViewController.prefetch(url) { logLine ->
+                    // You can get progress from the pre-fetch process
+                    // Add logLine string to your progress log
+                    logText.text.appendLine(logLine)
                 }
             } catch (e: InvalidUrlError) {
                 // Show invalid URL error message
