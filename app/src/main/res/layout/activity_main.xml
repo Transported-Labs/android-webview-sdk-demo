@@ -51,7 +51,7 @@
         android:text="@string/prefetch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/openInChromeButton" />
+        app:layout_constraintTop_toBottomOf="@id/urlEditText" />
 
     <Button
         android:id="@+id/navigateButton"
@@ -63,6 +63,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/prefetchButton" />
+    <Button
+        android:id="@+id/navigateWithPrivacyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:minWidth="@dimen/button_min_width"
+        android:text="@string/navigate_with_privacy"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/navigateButton" />
 
     <Button
         android:id="@+id/openFileButton"
@@ -73,7 +83,7 @@
         android:text="@string/open_sample_page"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/navigateButton" />
+        app:layout_constraintTop_toBottomOf="@id/navigateWithPrivacyButton" />
 
     <RelativeLayout
         android:id="@+id/log_topbar"

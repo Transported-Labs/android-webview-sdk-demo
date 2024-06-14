@@ -76,6 +76,21 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
             }
         }
+        val navigateWithPrivacyButton = findViewById<Button>(R.id.navigateWithPrivacyButton)
+        navigateWithPrivacyButton.setOnClickListener {
+            var url = urlEditText.text.toString()
+            if (url == "") {
+                println("Empty URL is not allowed")
+                return@setOnClickListener
+            }
+            try {
+                url += "&privacy=true"
+                webViewController.navigateTo(url, addToLog)
+            } catch (e: InvalidUrlError) {
+                // Show invalid URL error message
+                Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+            }
+        }
         val openFileButton = findViewById<Button>(R.id.openFileButton)
         openFileButton.setOnClickListener {
             webViewController.navigateTo("file:///android_asset/index.html")
@@ -89,13 +104,18 @@ class MainActivity : AppCompatActivity() {
         val showCacheButton = findViewById<Button>(R.id.showCacheButton)
         showCacheButton.setOnClickListener {
             logText.post {
-                logText.text.appendLine(webViewController.showCache())
+                var resultMessage = "Cache contains the files:\n"
+                resultMessage += webViewController.showCache()
+                logText.text.appendLine(resultMessage)
             }
         }
         val clearCacheButton = findViewById<Button>(R.id.clearCacheButton)
         clearCacheButton.setOnClickListener {
             logText.post {
-                logText.text.appendLine(webViewController.clearCache())
+                var resultMessage = "Cache is started to be cleared\n"
+                resultMessage += webViewController.clearCache()
+                resultMessage += "Cache is finished to be cleared"
+                logText.text.appendLine(resultMessage)
             }
         }
     }
