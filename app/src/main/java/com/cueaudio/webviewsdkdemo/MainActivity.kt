@@ -118,6 +118,7 @@ class MainActivity : AppCompatActivity() {
                 logText.text.appendLine(resultMessage)
             }
         }
+        //Set Brightness Control 100% (TASK 17599).
     }
 
     private val addToLog: LogHandler = { logLine ->
