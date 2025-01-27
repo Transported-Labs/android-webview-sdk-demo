@@ -47,7 +47,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.zxing:core:3.4.1'
     implementation 'com.journeyapps:zxing-android-embedded:4.2.0'
-    implementation 'com.github.Transported-Labs:android-webview-sdk:0.0.10'
+    implementation 'com.github.Transported-Labs:android-webview-sdk:0.0.12'
     // Comment out the line above and uncomment the line below to use local android-webview-sdk
 //    implementation files('../../android-webview-sdk/lib/build/outputs/aar/lib-debug.aar')
     testImplementation 'junit:junit:4.13.2'
