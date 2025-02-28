@@ -58,6 +58,17 @@
         <button class="button" name="askCamButton">Ask Cam permission</button>
         <h3></h3>
         </td></tr></table>
+        <label for="saveCacheValue">Save text </label>
+        <input type="text" id="saveCacheValue" value="Hello CUE World"/>
+        <label for="saveCacheFile">to file with name </label>
+        <input type="text" id="saveCacheFile" value="hello.dat"/>
+        <h3></h3>
+        <table><td><td>
+            <button class="button" name="saveCacheFileButton">Save To Cache File </button>
+        </td><td>
+            <button class="button" name="getCacheFileButton">Get From Cache File </button>
+        </td></tr></table>
+        <h3></h3>
         <button class="button" name="testErrorButton">Test error</button>
         <h3></h3>
         <div id="methodResult"></div>
@@ -209,6 +220,16 @@
             var _testVideoCamButton = document.querySelector('button[name=testVideoCamButton]');
             _testVideoCamButton.addEventListener('click', function(event) {
                 testVideoCamera();
+            });
+            var _saveCacheFile = document.querySelector('input[id=saveCacheFile]');
+            var _saveCacheValue = document.querySelector('input[id=saveCacheValue]');
+            var _saveCacheFileButton = document.querySelector('button[name=saveCacheFileButton]');
+            _saveCacheFileButton.addEventListener('click', function(event) {
+                callMethod(storageServiceName, "saveCacheFile", _saveCacheFile.value, _saveCacheValue.value);
+            });
+            var _getCacheFileButton = document.querySelector('button[name=getCacheFileButton]');
+            _getCacheFileButton.addEventListener('click', function(event) {
+                callMethod(storageServiceName, "getCacheFile", _saveCacheFile.value);
             });
         </script>
     </body>
