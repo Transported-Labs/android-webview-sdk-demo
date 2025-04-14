@@ -10,6 +10,7 @@ import android.widget.FrameLayout
 import android.widget.Toast
 import com.cueaudio.cuelightshow.InvalidUrlError
 import com.cueaudio.cuelightshow.LogHandler
+import com.cueaudio.cuelightshow.LogHandlerHolder
 import com.cueaudio.cuelightshow.WebViewController
 import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.integration.android.IntentResult
@@ -22,10 +23,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val webViewController = WebViewController(this)
         urlEditText = findViewById(R.id.urlEditText)
         logText = findViewById(R.id.logText)
+
+        LogHandlerHolder.logHandler = addToLog
+        val webViewController = WebViewController(this)
         val openInBrowserButton = findViewById<Button>(R.id.openInChromeButton)
         openInBrowserButton.setOnClickListener {
             val url = urlEditText.text.toString()
@@ -56,7 +58,7 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             try {
-                webViewController.prefetch(url, addToLog)
+                webViewController.prefetch(url)
             } catch (e: InvalidUrlError) {
                 // Show invalid URL error message
                 Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
@@ -70,7 +72,7 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             try {
-                webViewController.navigateTo(url, addToLog)
+                webViewController.navigateTo(url)
             } catch (e: InvalidUrlError) {
                 // Show invalid URL error message
                 Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
@@ -85,7 +87,7 @@ class MainActivity : AppCompatActivity() {
             }
             try {
                 url += "&privacy=true"
-                webViewController.navigateTo(url, addToLog)
+                webViewController.navigateTo(url)
             } catch (e: InvalidUrlError) {
                 // Show invalid URL error message
                 Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()

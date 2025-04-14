@@ -57,6 +57,14 @@
         </td><td>
         <button class="button" name="askCamButton">Ask Cam permission</button>
         <h3></h3>
+        </td></tr><tr><td>
+        <button class="button" name="getNetworkStatusButton">Is Network On?</button>
+        <h3></h3>
+        </td><td>
+        <label for="networkStatusValue">Sample status </label>
+        <input type="text" id="networkStatusValue" value="on"/>
+        <button class="button" name="notifyNetworkButton">Notify</button>
+        <h3></h3>
         </td></tr></table>
         <label for="saveCacheValue">Save text </label>
         <input type="text" id="saveCacheValue" value="Hello CUE World"/>
@@ -91,6 +99,7 @@
             const permissionsServiceName = "permissions";
             const storageServiceName = "storage";
             const cameraServiceName = "camera";
+            const networkServiceName = "network";
 
             //JSON is passed from app like that:
             //cueSDKCallback(JSON.stringify({
@@ -100,7 +109,12 @@
                 //var transferData = JSON.parse(data);
                 document.getElementById('methodResult').innerText = "Returned JSON: " + data.toString();
             }
-            
+            function cueSDKNotification(data) {
+                //Process data as JSON object, e.g.
+                //var transferData = JSON.parse(data);
+                document.getElementById('methodResult').innerText = "Notification JSON: " + data.toString();
+            }
+
             function callMethod(...args) {
                 var argString = JSON.stringify([requestId, ...args]);
                 if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.cueSDK) {
@@ -200,6 +214,15 @@
             var _askCamButton = document.querySelector('button[name=askCamButton]');
             _askCamButton.addEventListener('click', function(event) {
                 callMethod(permissionsServiceName, "getCameraPermission");
+            });
+            var _getNetworkStatusButton = document.querySelector('button[name=getNetworkStatusButton]');
+            _getNetworkStatusButton.addEventListener('click', function(event) {
+                callMethod(networkServiceName, "getState");
+            });
+            var _notifyNetworkButton = document.querySelector('button[name=notifyNetworkButton]');
+            var _networkStatusValue = document.querySelector('input[id=networkStatusValue]');
+            _notifyNetworkButton.addEventListener('click', function(event) {
+                cueSDKNotification(JSON.stringify(["network-state", _networkStatusValue.value]));
             });
             var _testErrorButton = document.querySelector('button[name=testErrorButton]');
             _testErrorButton.addEventListener('click', function(event) {
