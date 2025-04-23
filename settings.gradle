@@ -14,4 +14,5 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "WebViewSDKDemo"
-include ':app'
+include ':app', ':library'
+project(':library').projectDir = new File(settingsDir, '../android-webview-sdk/lib')

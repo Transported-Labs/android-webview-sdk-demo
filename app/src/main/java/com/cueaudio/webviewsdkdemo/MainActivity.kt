@@ -1,16 +1,14 @@
 package com.cueaudio.webviewsdkdemo
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.FrameLayout
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.cueaudio.cuelightshow.AppLog
 import com.cueaudio.cuelightshow.InvalidUrlError
 import com.cueaudio.cuelightshow.LogHandler
-import com.cueaudio.cuelightshow.LogHandlerHolder
 import com.cueaudio.cuelightshow.WebViewController
 import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.integration.android.IntentResult
@@ -26,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         urlEditText = findViewById(R.id.urlEditText)
         logText = findViewById(R.id.logText)
 
-        LogHandlerHolder.logHandler = addToLog
+        AppLog.logHandler = addToLog
         val webViewController = WebViewController(this)
         val openInBrowserButton = findViewById<Button>(R.id.openInChromeButton)
         openInBrowserButton.setOnClickListener {
