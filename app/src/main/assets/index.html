@@ -31,10 +31,20 @@
         <button class="button" name="torchLevelButton">Turn on dimmed</button>
         <h3></h3>
         </td></tr></table>
+        <table><tr><td>
         <button class="button" name="torchStateButton">Check state</button>
         <h3></h3>
+        </td><td>
+        <button class="button" name="timelineStartButton">Timeline Start</button>
+        <h3></h3>
+        </td></tr>
+        <tr><td>
         <button class="button" name="vibrateButton">Vibrate</button>
         <h3></h3>
+        </td><td>
+        <button class="button" name="timelineStopButton">Timeline Stop</button>
+        <h3></h3>
+        </td></tr></table>
         <button class="button" name="sparkleButton">Simple sparkle</button>
         <h3></h3>
         <button class="button" name="advancedSparkleButton">Advanced sparkle</button>
@@ -100,6 +110,7 @@
             const storageServiceName = "storage";
             const cameraServiceName = "camera";
             const networkServiceName = "network";
+            const timelineServiceName = "timeline";
 
             //JSON is passed from app like that:
             //cueSDKCallback(JSON.stringify({
@@ -253,6 +264,14 @@
             var _getCacheFileButton = document.querySelector('button[name=getCacheFileButton]');
             _getCacheFileButton.addEventListener('click', function(event) {
                 callMethod(storageServiceName, "getCacheFile", _saveCacheFile.value);
+            });
+            var _timelineStartButton = document.querySelector('button[name=timelineStartButton]');
+            _timelineStartButton.addEventListener('click', function(event) {
+                callMethod(timelineServiceName, "start");
+            });
+            var _timelineStopButton = document.querySelector('button[name=timelineStopButton]');
+            _timelineStopButton.addEventListener('click', function(event) {
+                callMethod(timelineServiceName, "stop");
             });
         </script>
     </body>
