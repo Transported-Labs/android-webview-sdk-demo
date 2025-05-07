@@ -50,8 +50,9 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    // Use the local library in debug builds
-    debugImplementation project(":library")
-    // Use the published library in release builds
-    releaseImplementation 'com.github.Transported-Labs:android-webview-sdk:0.0.21'
+//    // Use the local library in debug builds
+//    debugImplementation project(":library")
+//    // Use the published library in release builds
+//    releaseImplementation 'com.github.Transported-Labs:android-webview-sdk:0.0.21'
+    implementation 'com.github.Transported-Labs:android-webview-sdk:0.0.21'
 }
