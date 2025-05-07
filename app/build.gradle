@@ -53,5 +53,5 @@ dependencies {
     // Use the local library in debug builds
     debugImplementation project(":library")
     // Use the published library in release builds
-    releaseImplementation 'com.github.Transported-Labs:android-webview-sdk:0.0.20'
+    releaseImplementation 'com.github.Transported-Labs:android-webview-sdk:0.0.21'
 }
