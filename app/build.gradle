@@ -54,5 +54,5 @@ dependencies {
 //    debugImplementation project(":library")
 //    // Use the published library in release builds
 //    releaseImplementation 'com.github.Transported-Labs:android-webview-sdk:0.0.21'
-    implementation 'com.github.Transported-Labs:android-webview-sdk:0.0.21'
+    implementation 'com.github.Transported-Labs:android-webview-sdk:0.0.22'
 }
