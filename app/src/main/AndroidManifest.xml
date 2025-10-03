@@ -16,10 +16,19 @@
             android:name=".MainActivity"
             android:screenOrientation="portrait"
             android:exported="true">
-            <intent-filter>
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- CUE's deeplink domain and paths -->
+                <data android:scheme="https"/>
+                <data android:host="portal.cueaudio.com"/>
+                <data android:host="cueuc.com"/>
+                <data android:pathPrefix="/app/websdkdemo"/>
             </intent-filter>
         </activity>
         <activity android:name="com.cueaudio.cuelightshow.WebViewActivity" />

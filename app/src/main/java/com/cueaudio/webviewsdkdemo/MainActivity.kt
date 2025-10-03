@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var urlEditText: EditText
     private lateinit var logText: EditText
     private lateinit var navigateButton: Button
+    private lateinit var webViewController: WebViewController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -25,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         logText = findViewById(R.id.logText)
 
         AppLog.logHandler = addToLog
-        val webViewController = WebViewController(this)
+        webViewController = WebViewController(this)
         val openInBrowserButton = findViewById<Button>(R.id.openInChromeButton)
         openInBrowserButton.setOnClickListener {
             val url = urlEditText.text.toString()
@@ -118,7 +119,7 @@ class MainActivity : AppCompatActivity() {
                 logText.text.appendLine(resultMessage)
             }
         }
-        //Set Brightness Control 100% (TASK 17599).
+        handleIntent(intent)
     }
 
     private val addToLog: LogHandler = { logLine ->
@@ -138,6 +139,29 @@ class MainActivity : AppCompatActivity() {
         } else {
             @Suppress("DEPRECATION")
             super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        handleIntent(intent)
+    }
+
+    private fun handleIntent(intent: Intent?) {
+        if (Intent.ACTION_VIEW == intent?.action) {
+            intent.data?.let { uri ->
+                val url = uri.toString()
+                urlEditText.setText(url)
+                if (url == "") {
+                    println("Empty URL is not allowed")
+                    return
+                }
+                try {
+                    webViewController.navigateTo(url)
+                } catch (e: InvalidUrlError) {
+                    // Show invalid URL error message
+                    Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 }
