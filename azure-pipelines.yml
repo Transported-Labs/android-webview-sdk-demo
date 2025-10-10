@@ -139,8 +139,9 @@ stages:
           - bash: |
               set -e
               ls -lFht $(System.DefaultWorkingDirectory)/../android-webview-sdk/lib/build/outputs/aar/
-              rm gradlew
-              gradle wrapper
+              # rm gradlew
+              # gradle wrapper
+              ./gradlew wrapper --gradle-version 8.13 --distribution-type all
               ls -lFht
               ./gradlew assemble
             displayName: Build apk
